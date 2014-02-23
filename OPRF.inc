@@ -33,10 +33,63 @@ _____________________________________________________________________________*/
 
 #define _included_L_OnPlayerRapidFire
 
-#tryinclude <a_samp>
-
 static
 	Lrapid_oldticks[MAX_PLAYERS] = {0, ...};
+
+
+#if defined FILTERSCRIPT
+public OnFilterScriptInit()
+{
+	for(new i; i< GetMaxPlayers(); i++) {
+		if(!IsPlayerConnected(i)) continue;
+		OnPlayerConnect(i);
+	}
+	#if defined LRAPID_OnFilterScriptInit
+	LRAPID_OnFilterScriptInit();
+	#endif
+	return 1;
+}
+
+#if defined _ALS_OnFilterScriptInit
+	#undef OnFilterScriptInit
+#else
+	#define _ALS_OnFilterScriptInit
+#endif
+
+#define OnFilterScriptInit LRAPID_OnFilterScriptInit
+
+#if defined LRAPID_OnFilterScriptInit
+forward LRAPID_OnFilterScriptInit();
+#endif
+
+#else
+
+public OnGameModeInit()
+{
+	for(new i; i< GetMaxPlayers(); i++) {
+	    if(!IsPlayerConnected(i)) continue;
+	    OnPlayerConnect(i);
+	}
+	#if defined LRAPID_OnGameModeInit
+	LRAPID_OnGameModeInit();
+	#endif
+	return 1;
+}
+
+#if defined _ALS_OnGameModeInit
+	#undef OnGameModeInit
+#else
+	#define _ALS_OnGameModeInit
+#endif
+
+#define OnGameModeInit  LRAPID_OnGameModeInit
+
+#if defined LRAPID_OnGameModeInit
+forward LRAPID_OnGameModeInit();
+#endif
+
+#endif
+
 
 public OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, Float:fX, Float:fY, Float:fZ)
 {
@@ -91,6 +144,7 @@ forward LRAPID_OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, Float:fX, 
 #if defined LRAPID_OnPlayerConnect
 forward LRAPID_OnPlayerConnect(playerid);
 #endif
+
 
 forward OnPlayerRapidFire(playerid, weaponid, intervals);
 /*
