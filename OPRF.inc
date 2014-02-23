@@ -17,7 +17,7 @@
       obtain one at
       http://mozilla.org/MPL/2.0/.
 
-Author : Lordz™ AKA Lordzy.
+Author : Lordzâ„¢ AKA Lordzy.
 
 Callbacks:
 OnPlayerRapidFire(playerid, weaponid, intervals);
@@ -33,20 +33,21 @@ _____________________________________________________________________________*/
 
 #define _included_L_OnPlayerRapidFire
 
+#tryinclude <a_samp>
 
 static
-	Lrapid_oldticks = 0;
+	Lrapid_oldticks[MAX_PLAYERS] = {0, ...};
 
 public OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, Float:fX, Float:fY, Float:fZ)
 {
-	if(Lrapid_oldticks == 0) Lrapid_oldticks = GetTickCount();
+	if(Lrapid_oldticks[playerid] == 0) Lrapid_oldticks[playerid] = GetTickCount();
 	else {
 		new Lrapid_intervals,
 			Lrapid_checkreturn;
-		if((Lrapid_intervals = GetTickCount() - Lrapid_oldticks) <= 35 && GetPlayerWeapon(playerid) != 38) { //Minigun got a higher fire rate.
+		if((Lrapid_intervals = GetTickCount() - Lrapid_oldticks[playerid]) <= 35 && GetPlayerWeapon(playerid) != 38) { //Minigun got a higher fire rate.
 	    	Lrapid_checkreturn = CallLocalFunction("OnPlayerRapidFire", "iii", playerid, weaponid, Lrapid_intervals);
 		}
-		Lrapid_oldticks = GetTickCount();
+		Lrapid_oldticks[playerid] = GetTickCount();
 		if(!Lrapid_checkreturn) return 0; //Doesn't allow to call the rest 'OnPlayerWeaponShot' works anymore.
 	}
 	#if defined LRAPID_OnPlayerWeaponShot
@@ -57,6 +58,15 @@ public OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, Float:fX, Float:fY
 }
 
 	
+public OnPlayerConnect(playerid)
+{
+	Lrapid_oldticks[playerid] = 0;
+	#if defined LRAPID_OnPlayerConnect
+	LRAPID_OnPlayerConnect(playerid);
+	#endif
+	return 1;
+}
+
 
 #if defined _ALS_OnPlayerWeaponShot
 	#undef OnPlayerWeaponShot
@@ -70,11 +80,21 @@ public OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, Float:fX, Float:fY
 forward LRAPID_OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, Float:fX, Float:fY, Float:fZ);
 #endif
 
+#if defined _ALS_OnPlayerConnect
+	#undef OnPlayerConnect
+#else
+	#define _ALS_OnPlayerConnect
+#endif
+
+#define OnPlayerConnect LRAPID_OnPlayerConnect
+
+#if defined LRAPID_OnPlayerConnect
+forward LRAPID_OnPlayerConnect(playerid);
+#endif
+
 forward OnPlayerRapidFire(playerid, weaponid, intervals);
 /*
 playerid - returns the player who does rapid shots.
 weaponid - returns the weapon's ID which is being used for rapid shots.
 intervals - returns the difference between the last shot and the current one.*/
-
-
 
