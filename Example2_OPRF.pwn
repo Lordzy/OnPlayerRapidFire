@@ -20,4 +20,6 @@ public OnPlayerRapidFire(playerid, weaponid, intervals)
 
 
 forward OPRFKickPlayer(playerid);
-public OPRFKickPlayer(playerid) return Kick
+public OPRFKickPlayer(playerid) return Kick(playerid);
+
+
