@@ -17,7 +17,7 @@
       obtain one at
       http://mozilla.org/MPL/2.0/.
 
-Author : Lordzâ„¢ AKA Lordzy.
+Author : Lordz AKA Lordzy.
 
 Callbacks:
 OnPlayerRapidFire(playerid, weaponid, intervals);
@@ -97,7 +97,8 @@ public OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, Float:fX, Float:fY
 	else {
 		new Lrapid_intervals,
 			Lrapid_checkreturn;
-		if((Lrapid_intervals = GetTickCount() - Lrapid_oldticks[playerid]) <= 35 && GetPlayerWeapon(playerid) != 38) { //Minigun got a higher fire rate.
+		if((Lrapid_intervals = GetTickCount() - Lrapid_oldticks[playerid]) <= 35 && GetPlayerWeapon(playerid) != 38
+			&& GetPlayerWeapon(playerid) != 28 && GetPlayerWeapon(playerid) != 32) { //Submachines such as 32, 28 and minigun got a higher fire rate.
 	    	Lrapid_checkreturn = CallLocalFunction("OnPlayerRapidFire", "iii", playerid, weaponid, Lrapid_intervals);
 		}
 		Lrapid_oldticks[playerid] = GetTickCount();
@@ -151,4 +152,5 @@ forward OnPlayerRapidFire(playerid, weaponid, intervals);
 playerid - returns the player who does rapid shots.
 weaponid - returns the weapon's ID which is being used for rapid shots.
 intervals - returns the difference between the last shot and the current one.*/
+
 
