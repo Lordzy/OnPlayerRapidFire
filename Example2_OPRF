@@ -1,0 +1,22 @@
+#include <a_samp>
+#include <OPRF>
+
+new
+	bool:OPRF_Processed[MAX_PLAYERS];
+	
+public OnPlayerRapidFire(playerid, weaponid, intervals)
+{
+	if(OPRF_Processed[playerid] == true) return 0;
+	new
+		string[128],
+		Lname[MAX_PLAYER_NAME];
+	GetPlayerName(playerid, Lname, sizeof(Lname));
+	format(string, sizeof(string), "AntiCheat : %s (ID:%d) has been kicked from the server! (Reason : Rapid Fire with weapon ID %d in %d milli seconds)", Lname, playerid, weaponid, intervals);
+	SendClientMessageToAll(0xFF0000FF, string);
+	OPRF_Processed[playerid] = true;
+	return !SetTimerEx("OPRFKickPlayer", 100, false, "d", playerid);
+}
+
+
+forward OPRFKickPlayer(playerid);
+public OPRFKickPlayer(playerid) return Kick
