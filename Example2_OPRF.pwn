@@ -3,8 +3,23 @@
 #include <OPRF>
 
 new
-	bool:OPRF_Processed[MAX_PLAYERS];
-	
+	bool:OPRF_Processed[MAX_PLAYERS] = {false, ...};
+
+public OnPlayerConnect(playerid)
+{
+	OPRF_Processed[playerid] = false;
+	return 1;
+}
+
+public OnFilterScriptInit()
+{
+	for(new i = 0; i< GetMaxPlayers(); i++) {
+	    if(!IsPlayerConnected(i)) continue;
+	    OPRF_Processed[i] = false;
+	}
+	return 1;
+}
+
 public OnPlayerRapidFire(playerid, weaponid, intervals)
 {
 	if(OPRF_Processed[playerid] == true) return 0;
@@ -15,11 +30,16 @@ public OnPlayerRapidFire(playerid, weaponid, intervals)
 	format(string, sizeof(string), "AntiCheat : %s (ID:%d) has been kicked from the server! (Reason : Rapid Fire with weapon ID %d in %d milli seconds)", Lname, playerid, weaponid, intervals);
 	SendClientMessageToAll(0xFF0000FF, string);
 	OPRF_Processed[playerid] = true;
-	return !SetTimerEx("OPRFKickPlayer", 100, false, "d", playerid);
+	return !SetTimerEx("OPRFKickPlayer", 150, false, "d", playerid);
 }
 
 
 forward OPRFKickPlayer(playerid);
-public OPRFKickPlayer(playerid) return Kick(playerid);
+public OPRFKickPlayer(playerid)
+{
+	if(!IsPlayerConnected(playerid)) return 0;
+	Kick(playerid);
+	return 1;
+}
 
 
