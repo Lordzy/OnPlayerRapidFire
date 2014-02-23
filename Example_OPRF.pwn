@@ -1,3 +1,4 @@
+#define FILTERSCRIPT //It's a filterscript version.
 #include <a_samp>
 #include <OPRF>
 
