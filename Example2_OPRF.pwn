@@ -1,6 +1,6 @@
 #define FILTERSCRIPT //It's a filterscript version.
 #include <a_samp>
-#include <OPRF>
+#include <OPRF2>
 
 new
 	bool:OPRF_Processed[MAX_PLAYERS] = {false, ...};
