@@ -112,8 +112,8 @@ public OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, Float:fX, Float:fY
 	else {
 		new Lrapid_intervals,
 			Lrapid_checkreturn = 1;
-		if((Lrapid_intervals = GetTickCount() - Lrapid_oldticks[playerid]) <= 35 && GetPlayerWeapon(playerid) != 38
-			&& GetPlayerWeapon(playerid) != 28 && GetPlayerWeapon(playerid) != 32) { //Submachines such as 32, 28 and minigun got a higher fire rate.
+		if((Lrapid_intervals = GetTickCount() - Lrapid_oldticks[playerid]) <= 35 &&(GetPlayerWeapon(playerid) != 38
+			&& GetPlayerWeapon(playerid) != 28 && GetPlayerWeapon(playerid) != 32)) { //Submachines such as 32, 28 and minigun got a higher fire rate.
 	    	Lrapid_checkreturn = CallLocalFunction("OnPlayerRapidFire", "iii", playerid, weaponid, Lrapid_intervals);
 		}
 		else if((Lrapid_intervals = GetTickCount() - Lrapid_oldticks[playerid]) <= 370 && (GetPlayerWeapon(playerid) == 34 ||
