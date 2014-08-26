@@ -1,45 +1,56 @@
-OnPlayerRapidFire
-=================
+					OnPlayerRapidFire - OPRF.inc
+					    By Lordz AKA Lordzy
+						- 2014
 
-"OnPlayerRapidFire" is a callback which gets called for 0.3z SA-MP versions when a player does rapid fire. "Rapid Fire" is a cheat which could be done through Cleo scripts and could entirely be harmful for DM servers. This anti-cheat can prevent and determine rapid shots.
+						Version : 3
+	
+	"OPRF" AKA OnPlayerRapidFire is an include which provides a callback called
+	"OnPlayerRapidFire" which is called when a player does rapid fire cheat.
+	Rapid shots, especially on DM servers with lagcompmode 'On' can be very -
+	harmful because quick kills are possible with rapid fires. This include
+	detects if a player does rapid fire or not for the following weapons :
+	
+	    Colt,
+	    Desert Eagle,
+	    Silenced Pistol,
+	    Shotgun,
+	    Sawnoff Shotgun,
+	    Combat Shotgun,
+		Uzi,
+		MP5,
+		Tec9,
+		AK47,
+		M4,
+		Country Rifle,
+		Sniper Rifle.
 
-Currently, there's a small issue in with detecting assault rifles which will be soon fixed. So while using the callback, give exception to assault rifles or do a warning system in regarding detecting Assault rifles.
+      This Source Code Form is subject to the
+      terms of the Mozilla Public License, v.
+      2.0. If a copy of the MPL was not
+      distributed with this file, You can
+      obtain one at
+      http://mozilla.org/MPL/2.0/.
 
+Author : Lordz AKA Lordzy.
 
-new
-  LastAssaultRapid[MAX_PLAYERS],
-  AssaultRapidCounts[MAX_PLAYERS];
+Callbacks:
+OnPlayerRapidFire(playerid, weaponid, intervals);
+ playerid - returns the player who does rapid shots.
+ weaponid - returns the weapon's ID which is being used for rapid shots.
+ intervals - returns the difference between the last shot and the current one.
 
-public OnPlayerRapidFire(playerid, weaponid, intervals)
-{
+Changelogs:
 
-  if(weaponid == 31 || weaponid == 30)
-  {
-    if((GetTickCount() - LastAssaultRapid[playerid]) <= 40)
-    {
-      AssaultRapidCounts[playerid]++;
-      LastAssaultRapid[playerid] = GetTickCount();
-    }
-    else 
-    {
-      if(AssaultRapidCounts[playerid] >= 1)
-      {
-        AssaultRapidCounts[playerid]--;
-        return 1;
-      }
-    }
-    if(AssaultRapidCounts[playerid] >= 5)
-    {
-      //The stuffs to do: (Probably kick ?)
-      return 0;
-    }
-  }
-  return 0;
-}
+23-02-2014
+ - Initial Release.
+ - Fixed some issues with arrays.
+ - Fixed the problem for sub-machine guns like Tec9 (ID:32) and uzi (ID:28)
 
-public OnPlayerConnect(playerid)
-{
-  AssaultRapidCounts[playerid] = 0;
-  LastAssaultRapid[playerid] = 0;
-  return 1;
-}
+24-02-2014 (v2 Released)
+ - Added support for Sniper Rifle and Country Rifle.
+ (Thanks to 'West X' for reporting about it)
+
+26-8-2014
+
+ - Improved the way of detection.
+ - Added : GetPlayerLastShotTick which would return the last shot time data.
